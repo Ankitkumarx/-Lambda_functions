@@ -10,7 +10,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     environment: ${{ github.ref_name }}
 
     steps:
@@ -24,9 +23,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      - name: Zip and Deploy
+      - name: Zip and Deploy to Lambda
         run: |
-          zip -r function.zip .
+          zip -r function.zip . -x ".git/*" ".github/*" "*.mp4" "*.pdf" "*.pptx" "*.lnk"
           aws lambda update-function-code \
             --function-name carehub_pcg_extract_process \
             --zip-file fileb://function.zip
